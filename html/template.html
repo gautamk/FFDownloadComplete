@@ -1,0 +1,310 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/themes/redmond/jquery-ui.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js" type="text/javascript"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js" type="text/javascript"></script>
+		<script type="text/javascript">
+		$(document).ready(function ()
+		{
+			{{ documentReadyDo }}
+			$('#GenerateRandomKeyButton').click(GenerateRandomKey);
+			$('button , [type=submit]').button();
+		
+			$('#UserDetail,#Options').dialog(
+			{
+				autoOpen:false,
+				modal:true,
+				show:'drop',
+				hide:'drop',
+				width:750,
+
+			});
+				$('#Options').dialog(
+			{
+				buttons:[
+					{
+						text:'Logout',
+						click:function()
+						{
+							window.location.replace('{{ logoutUrl }}');
+						}
+					},
+					{
+						text:'Send Test Email',
+						click:function ()
+						{
+							$.post("/Mail", { SecretKey:'{{ SecretKey }}' , description :'User Requested Test Mail @'+ new Date()},  
+							function(data) 
+							{
+								alert(data);
+								
+							});
+						}
+					},				
+					{
+						text:'Register/Modify Settings',
+						click:function ()
+						{
+							$('#UserDetail').dialog('open');
+						}
+
+					},
+					
+				],
+			});
+
+			$('#UserDetail').submit(function()
+			{
+				var EmailReg = /^([A-Za-z0-9_\+\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+			
+				if(! EmailReg.test(	$('#Send2Email').val() ) )
+					{
+					alert('Invalid Email address');
+					return false;
+					}
+				if(  ($('#SecretKey').val() == "" )  || ( $('#SecretKey').val().length<5 )  )
+				{
+					alert('Please Enter a Scret Key of your choice \n Example : AxcjfWETYggbFF45 \n Minimum 5 characters');
+					return false;
+				}
+
+				$.post("/Register", { Send2Email:$('#Send2Email').val() , SecretKey : $('#SecretKey').val() },  
+					function(data) 
+					{
+						alert(data);
+						window.location.reload();
+					});
+
+				return false;
+			});
+			$('#Send2MyId').click(function()
+			{
+				if($(this).is(':checked'))
+				{
+					$('#Send2Email').attr('readonly','true');
+					$('#Send2Email').val('{{ userEmail }}');
+				}
+				else
+				{
+					$('#Send2Email').removeAttr('readonly');
+				$('#Send2Email').select();
+				}
+			});
+
+			
+
+		});
+
+		function GenerateRandomKey()
+		{
+			$.post("/GenerateSecretKey", { message: new Date() },   function(data) 
+				{
+				
+						$('#SecretKey').val(data);
+				});
+		}
+
+		</script>
+		<title>FF Dld Notifyr </title>
+		<style>
+	
+		#Header 
+		{
+			postion:absolute;
+			top:0px;
+			background-color:#5c9ccc;
+			color:#ffffff;
+			text-align:center;
+			border-radius:50px;
+			
+		}
+		#Footer
+		{
+			position:fixed;
+			bottom:0px;
+			padding : 5px;
+			text-align:center;
+			background-color:#fbec88;
+			color:#363636;
+			border-radius:10px;
+		}
+		body
+		{
+			background: #e9f6fd; /* Old browsers */
+			background: -moz-linear-gradient(top, #e9f6fd 0%, #d3eefb 100%); /* FF3.6+ */
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e9f6fd), color-stop(100%,#d3eefb)); /* Chrome,Safari4+ */
+			background: -webkit-linear-gradient(top, #e9f6fd 0%,#d3eefb 100%); /* Chrome10+,Safari5.1+ */
+			background: -o-linear-gradient(top, #e9f6fd 0%,#d3eefb 100%); /* Opera11.10+ */
+			background: -ms-linear-gradient(top, #e9f6fd 0%,#d3eefb 100%); /* IE10+ */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e9f6fd', endColorstr='#d3eefb',GradientType=0 ); /* IE6-9 */
+			background: linear-gradient(top, #e9f6fd 0%,#d3eefb 100%); /* W3C */
+		}
+		#UserDetail  label
+		{
+			cursor : pointer;
+			color:#222222;
+		}
+
+		#UserDetail *
+		{
+			font-size:27px;
+			font-weight:Bolder;
+		}
+
+	#UserDetail tr , td
+		{
+			background: #b0d4e3; /* Old browsers */
+			background: -moz-linear-gradient(top, #b0d4e3 0%, #88bacf 100%); /* FF3.6+ */
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#b0d4e3), color-stop(100%,#88bacf)); /* Chrome,Safari4+ */
+			background: -webkit-linear-gradient(top, #b0d4e3 0%,#88bacf 100%); /* Chrome10+,Safari5.1+ */
+			background: -o-linear-gradient(top, #b0d4e3 0%,#88bacf 100%); /* Opera11.10+ */
+			background: -ms-linear-gradient(top, #b0d4e3 0%,#88bacf 100%); /* IE10+ */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b0d4e3', endColorstr='#88bacf',GradientType=0 ); /* IE6-9 */
+			background: linear-gradient(top, #b0d4e3 0%,#88bacf 100%); /* W3C */
+			margin:50px;
+			padding:10px;
+			border-radius:12px;
+		}
+		#AutoshutdownContent
+		{
+			background-image:url('images/autoshutdown.png');
+			width:826px;
+			height:621px;
+			margin: 0 auto;
+		}
+		#AutoshutdownScript
+		{
+			position:relative;
+			top:335px;
+			left:40px;
+		}
+		#AutoshutdownScript > textarea
+		{
+				border:none;
+				background:none;
+		}
+		#AutoshutdownScript > textarea:focus
+		{	
+					outline:#a6c9e2 solid thin;
+					font-weight:bolder;
+					color:grey;
+		}
+		#AboutUser
+		{
+		    position:fixed;
+		    top:50px;
+
+			background: #7abcff;
+			background: -moz-linear-gradient(top, #7abcff 0%, #60abf8 44%, #4096ee 100%);
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7abcff), color-stop(44%,#60abf8), color-stop(100%,#4096ee));
+			background: -webkit-linear-gradient(top, #7abcff 0%,#60abf8 44%,#4096ee 100%);
+			background: -o-linear-gradient(top, #7abcff 0%,#60abf8 44%,#4096ee 100%);
+			background: -ms-linear-gradient(top, #7abcff 0%,#60abf8 44%,#4096ee 100%);
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7abcff', endColorstr='#4096ee',GradientType=0 );
+			background: linear-gradient(top, #7abcff 0%,#60abf8 44%,#4096ee 100%);
+
+		    padding:5px;
+		    border-radius:5px;
+		    color:white;
+		    font-weight:bolder;
+		    -moz-transform:rotate(-270deg); 
+			-moz-transform-origin: bottom left;
+			-webkit-transform: rotate(-270deg);
+			-webkit-transform-origin: bottom left;
+			-o-transform: rotate(-270deg);
+			-o-transform-origin:  bottom left;
+		}
+		</style>
+	</head>
+	<body>
+	<div id="Header">
+		<h1 style="" >FF Download Notifier</h1>
+	</div>
+
+
+	<div id="Content">
+		<div
+		style="
+		width:700px;
+		margin:0 auto;
+		padding:3px;
+		"
+		>
+				<h2>About:</h2>
+				<p>
+					This web application is designed to send you an e.mail once all the downloads on firefox have completed .<br />
+					This application works best with Auto Shutdown add-on for Firefox .<br />
+				</p>
+				<p>
+					Auto Shutdown can be downloaded from <a href="/blobs/ShutDown-InBasic.xpi" target="_blank" > here </a>
+				</p>
+		</div>
+		<div id="AutoshutdownContent">
+			<div id="AutoshutdownScript" >
+				<textarea   cols="93" rows="9" readonly>
+<javaScript>
+	xmlhttp=new XMLHttpRequest();
+	xmlhttp.open('POST','http://ffdownloadcomplete.appspot.com/Mail',true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	var NewDate = new Date();
+	xmlhttp.send("SecretKey={{ SecretKey }}&description=downloadCompleted@" + NewDate );
+</javaScript>
+				</textarea>
+			</div>
+		</div>
+	</div>
+
+
+	<div id="Dialogs">
+		<div id="Options" title="Options">
+		
+		</div>
+		<form id="UserDetail" action="/register" method="POST" title="Registration / Modify Settings " >
+			<table>
+				<tr>
+					<td>
+					<label for="Username" >Username:</label><br>
+					<input type="text" readonly="true" name="Username" id="Username" value=" {{ userName }}" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+					<label for="Send2Email" >Send To Email id:</label><br>
+					<input type="text"  id="Send2Email" name="Send2Email"  />
+					<label class="ErrorLabel" id="EmailErrorLabel"></label>
+					
+					<input type="checkbox" id="Send2MyId" /><label for="Send2MyId" >: Send to my Email id </label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+					<label for="SecretKey">Secret Key:</label><br>
+					<input type="text"  id="SecretKey" name="SecretKey" value="" />
+					<button type="button" id="GenerateRandomKeyButton"  >Generate Random Key </button>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align:right;">
+					<img src="images/ajax_load.gif" id="AjaxLoadGif" style="visibility:hidden;" />
+					<input type="submit" value="save settings" />
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div id="Footer">
+		
+		<div>A K.Gautam Production .</div>
+	</div>
+		<button style="	
+		position:fixed;
+		bottom:0px;
+		right:0px;
+		font-size:25px;
+		border-radius:10px;		
+		" id="OptionsButton" onclick="$('#Options').dialog('open');" >Options </button>
+		<div id="AboutUser" >
+		You are Logged in as {{ userName }}
+		</div>
+	</body>
+</html>

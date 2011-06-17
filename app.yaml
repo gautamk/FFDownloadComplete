@@ -1,0 +1,28 @@
+application: ffdownloadcomplete
+version: 3
+runtime: python
+api_version: 1
+
+handlers:
+
+
+- url : /images
+  static_dir: html/images
+
+- url: /blobs
+  static_dir: blobs
+
+- url : /Register
+  script : python/register.py
+  login: required
+
+- url : /GenerateSecretKey
+  script : python/get_md5.py
+
+- url : /Mail
+  script : python/index.py
+
+- url: ./*
+  script: python/index.py
+  login: required
+
