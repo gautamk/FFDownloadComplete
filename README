@@ -1,0 +1,23 @@
+ _______ _______ _____                    _                 _  ______                   _                  
+(_______|_______|____ \                  | |               | |/ _____)                 | |      _          
+ _____   _____   _   \ \ ___  _ _ _ ____ | | ___   ____  _ | | /       ___  ____  ____ | | ____| |_   ____ 
+|  ___) |  ___) | |   | / _ \| | | |  _ \| |/ _ \ / _  |/ || | |      / _ \|    \|  _ \| |/ _  )  _) / _  )
+| |     | |     | |__/ / |_| | | | | | | | | |_| ( ( | ( (_| | \_____| |_| | | | | | | | ( (/ /| |__( (/ / 
+|_|     |_|     |_____/ \___/ \____|_| |_|_|\___/ \_||_|\____|\______)\___/|_|_|_| ||_/|_|\____)\___)\____)
+                                                                                 |_|                       
+
+This is a simple Google App Engine Application on the python runtime .
+
+The main Flow of usage is 
+	*Users with a google account Log into the application.
+	*The users register themselves and get/set a secret key.
+	*The system automatically generates a Javascript that can be used with the Firefox Extension Autoshutdown inbasic.
+	*The users should copy that code and configure Autoshutdown to execute that code when downloads complete .
+	*Finally when Downloads Completes The Firefox Extension Calls the Application which Sends an Email to the user.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+The Email functionality works by 
+	*When The application recieves a POST Request with the Secret Key of a particular user It Sends an Email to the e.mail address of the user's
+		choosing.
+	
