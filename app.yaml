@@ -5,23 +5,28 @@ api_version: 1
 
 handlers:
 
-
+#Contains The necessary Images 
 - url : /images
   static_dir: html/images
 
+#Contains the Blobs
 - url: /blobs
   static_dir: blobs
 
+#This page Recieves the POST Request data to register a user
 - url : /Register
   script : python/register.py
   login: required
 
+#This Page generates a Random md5 hash based on the current time for useage as a secret key
 - url : /GenerateSecretKey
   script : python/get_md5.py
 
+#This page receives the Post request to send an Email
 - url : /Mail
   script : python/index.py
 
+#This is the default home page which is generated based on template.html
 - url: ./*
   script: python/index.py
   login: required

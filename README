@@ -9,15 +9,31 @@
 This is a simple Google App Engine Application on the python runtime .
 
 The main Flow of usage is 
-	*Users with a google account Log into the application.
-	*The users register themselves and get/set a secret key.
-	*The system automatically generates a Javascript that can be used with the Firefox Extension Autoshutdown inbasic.
-	*The users should copy that code and configure Autoshutdown to execute that code when downloads complete .
-	*Finally when Downloads Completes The Firefox Extension Calls the Application which Sends an Email to the user.
+	* Users with a google account Log into the application.
+	* The users register themselves and get/set a secret key.
+	* The system automatically generates a Javascript that can be used 
+ 		with the Firefox Extension Autoshutdown inbasic. 
+	* The users should copy that code and configure Autoshutdown to execute that code when downloads complete .
+	* Finally when Downloads Completes The Firefox Extension Calls the Application which Sends an Email to the user.
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-The Email functionality works by 
-	*When The application recieves a POST Request with the Secret Key of a particular user It Sends an Email to the e.mail address of the user's
-		choosing.
+The Working of the email Functionality
+	* When The application recieves a POST Request with the Secret Key of a particular user, 
+		It Sends an Email to the e.mail address of the user's choosing.
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Directory Structure :
 	
+	* ./		-Contains app.yaml which is the configutaion file for the Application
+
+	* python/	-Contains all the Script files for each page 
+
+	* html/		-Contains the Html Template and related images
+
+	* blobs/	-Contains any miscellaneous blob files
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+For Url Structure refer app.yaml
